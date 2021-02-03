@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { returnErrors } from "./errorActions";
-import { 
+import {
 	LOGIN_SUCCESS,
 	LOGIN_FAIL,
 	REGISTER_SUCCESS,
@@ -10,15 +10,35 @@ import {
 	AUTH_ERROR,
 	LOGOUT_SUCCESS
 } from './types'
-
 import firebase from "firebase/app";
 
-const createUser =  ({ email, password }) => async (dispatch) => {
+const createUser =  ({ email, password, name }) => async dispatch => {
+	dispatch({ type: USER_LOADING })
+	try {
+		const res = await firebase.auth().createUserWithEmailAndPassword(email, password)
+		const { refreshToken, uid } = res.user
+		await firebase.database().ref(`/users/${uid}/info`).set({
+			name,
+			password
+		})
+		dispatch({type: REGISTER_SUCCESS, payload: {token: refreshToken}})
+	} catch (error) {
+		dispatch(returnErrors(error.message, error.code))
+		dispatch({ type: REGISTER_FAIL })
+	}
+}
+
+const loginUser = ({email, password}) => async dispatch => {
+	dispatch({ type: USER_LOADING })
 	try {
 		const res = await firebase.auth().signInWithEmailAndPassword(email, password)
-		console.log('res',res)
+		console.log(res);
+		const {refreshToken, uid} = res.user
+		dispatch({type: LOGIN_SUCCESS, payload: {token: refreshToken, uid}})
 	} catch (error) {
-		console.error(error);
+		dispatch(returnErrors(error.message, error.code))
+		dispatch({ type: AUTH_ERROR })
+		throw error
 	}
 }
 
@@ -56,4 +76,4 @@ const loadUser = () => async (dispatch, getState) => {
 	
 }
 
-export { loadUser, createUser }
+export { createUser, loginUser }
