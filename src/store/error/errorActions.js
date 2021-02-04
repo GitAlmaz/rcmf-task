@@ -1,4 +1,4 @@
-import { GET_ERRORS, CLEAR_ERRORS } from './types'
+import { GET_ERRORS, CLEAR_ERRORS } from '../types'
 
 const returnErrors = (message, code, id = null) => {
 	console.log(message, code);

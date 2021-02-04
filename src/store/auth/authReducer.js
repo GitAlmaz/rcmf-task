@@ -7,14 +7,13 @@ import {
   USER_LOADING,
   AUTH_ERROR,
   LOGOUT_SUCCESS
-} from "../actions/types"
+} from "../types"
 
 const initialState = {
   token: localStorage.getItem("token"),
   isAuth: null,
   isLoading: false,
-  user: null,
-  uid: null
+  user: null
 }
 
 const authReducer = (state = initialState, action) => {
@@ -29,7 +28,7 @@ const authReducer = (state = initialState, action) => {
         ...state,
         isAuth: true,
         isLoading: false,
-        user: action.payload
+        user: action.payload,
       }
     case LOGIN_SUCCESS:
     case REGISTER_SUCCESS:
@@ -51,8 +50,7 @@ const authReducer = (state = initialState, action) => {
         token: null,
         user: null,
         isAuth: false,
-        isLoading: false,
-        uid: null
+        isLoading: false
       }
 
     default:

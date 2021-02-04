@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
-import { tasksReducer } from '../reducers/tasksReducer'
-import { errorReducer } from '../reducers/errorReducer'
-import { authReducer } from '../reducers/authReducer'
+import { tasksReducer } from './tasks/tasksReducer'
+import { errorReducer } from './error/errorReducer'
+import { authReducer } from './auth/authReducer'
 
 const rootReducer = combineReducers({
 	tasks: tasksReducer,
