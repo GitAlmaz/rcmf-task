@@ -14,22 +14,39 @@ const tasksReducer = (state = initialState, action) => {
 			}
 		case TASKS_LOADED:
 			const data = { ...action.payload }
-			let arr = []
-			for (const key in data) {
-				arr = [
-					...arr,
-					{
-						id: key,
-						title: data[key].title,
-						description: data[key].description,
-						status: data[key].status
-					}
-				]
+			const obj = {
+				completed: [],
+				unfulfilled: []
 			}
+			// let arr = []
+			// for (const key in data) {
+			// 	arr = [
+			// 		...arr,
+			// 		{
+			// 			id: key,
+			// 			title: data[key].title,
+			// 			description: data[key].description,
+			// 			status: data[key].status,
+			// 			create_date: data[key].create_date
+			// 		}
+			// 	]
+			// }
+			
+			for (const key in data) {
+				let item = {
+					id: key,
+					title: data[key].title,
+					description: data[key].description,
+					status: data[key].status,
+					create_date: data[key].create_date
+				}
+				data[key].status ? obj.completed.push(item) : obj.unfulfilled.push(item)
+			}
+			console.log('obj', obj)
 			return {
 				...state,
 				isLoading: false,
-				tasks: arr
+				tasks: obj
 			}
 		case TASKS_FAIL:
 			return {

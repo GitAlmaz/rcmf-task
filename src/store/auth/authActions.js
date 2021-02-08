@@ -53,24 +53,23 @@ const logoutUser = () => async dispatch => {
 	}
 }
 
-const loadUser = () => async dispatch => {
+const loadUser = () => async (dispatch, getState) => {
 	dispatch({ type: USER_LOADING })
-
 	try {
-		const user = await firebase.auth().currentUser
-		if (!user) {
+		const { uid } = getState().auth
+		if (!uid) {
 			dispatch({ type: AUTH_ERROR })
 		} else {
 			await firebase
 				.database()
-				.ref(`/users/${user.uid}`)
+				.ref(`/users/${uid}`)
 				.on('value', async snapshot => {
 					const data = await snapshot.val()
-					dispatch({ type: USER_LOADED, payload: { ...data, uid: user.uid } })
+					dispatch({ type: USER_LOADED, payload: { ...data, uid } })
 				})
 		}
 	} catch (error) {
-		dispatch(returnErrors(error.response.data, error.response.status))
+		dispatch(returnErrors(error, error))
 		dispatch({ type: AUTH_ERROR })
 	}
 }

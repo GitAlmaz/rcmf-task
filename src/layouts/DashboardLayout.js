@@ -13,7 +13,7 @@ const DashboardLayout = ({ children, loadUser }) => {
 	return (
 		<>
 			<Layout style={{ minHeight: '100vh' }}>
-				<Sider width={250} collapsible>
+				<Sider width={250} collapsible defaultCollapsed={false}>
 					<Navigation />
 				</Sider>
 				<Content style={{ padding: '48px' }}>{children}</Content>
