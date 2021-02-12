@@ -9,4 +9,4 @@ const rootReducer = combineReducers({
 	auth: authReducer
 })
 
-export { rootReducer }
+export type RooState = ReturnType<typeof rootReducer>

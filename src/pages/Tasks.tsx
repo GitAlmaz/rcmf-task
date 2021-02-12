@@ -1,22 +1,42 @@
-import React, { useState, useEffect, memo } from 'react'
-import { connect, useSelector } from 'react-redux'
-import { Form, Empty, Button, Spin, Row, Col, Space, PageHeader, Typography } from 'antd'
+import React, { useState, useEffect, useCallback, memo } from 'react'
+import { connect, useSelector, useDispatch } from 'react-redux'
+import {
+	Form,
+	Empty,
+	Button,
+	Spin,
+	Row,
+	Col,
+	PageHeader,
+	Typography
+} from 'antd'
 import { FileAddOutlined } from '@ant-design/icons'
-import { createTask, deleteTask, editTask, loadTasks } from '../store/tasks/tasksActions'
+import {
+	createTask,
+	deleteTask,
+	editTask,
+	loadTasks
+} from '../store/tasks/tasksActions'
 import CreateTaskModal from '../components/CreateTaskModal'
 import Task from '../components/Task'
 
 const Tasks = memo(
-	({ createTask, deleteTask, editTask, loadTasks }) => {
-		const tasks = useSelector(state => state.tasks.tasks)
+	({}) => {
+		const tasks = useSelector(state: IRootState => state.tasks.tasks)
 		const isLoading = useSelector(state => state.tasks.isLoading)
 		const [isModalVisible, setIsModalVisible] = useState(false)
 		const [form] = Form.useForm()
+		const dispatch = useDispatch()
+
+		const createTaskAction = useCallback(dispatch(createTask()), [])
+		const deleteTaskAction = useCallback(dispatch(deleteTask()), [])
+		const editTaskAction = useCallback(dispatch(editTask()), [])
+		const loadTasksAction = useCallback(dispatch(loadTasks()), [])
 
 		const submitHandler = async values => {
 			try {
 				const data = { ...values, create_date: Date.now() }
-				await createTask(data)
+				await createTaskAction(data)
 			} catch (e) {}
 		}
 		const handleToggleModal = () => {
@@ -34,17 +54,27 @@ const Tasks = memo(
 					console.log(e)
 				})
 		}
-		const onTaskDelete = ({ id }) => deleteTask(id)
-		const onTaskEdit = value => editTask(value)
+		const dragStart = e => console.log('dragStart', e)
+		const dragMove = e => console.log('dragMove', e)
+		const dragEnd = e => console.log('dragEnd', e)
 
-		useEffect(async () => {
-			await loadTasks()
+		const onTaskDelete = ({ id }) => deleteTaskAction(id)
+		const onTaskEdit = value => editTaskAction(value)
+
+		useEffect(() => {
+			;(async () => await loadTasksAction())()
 		}, [])
 
 		return isLoading ? (
 			<Spin
 				size='large'
-				style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+				style={{
+					width: '100%',
+					height: '100%',
+					display: 'flex',
+					justifyContent: 'center',
+					alignItems: 'center'
+				}}
 			/>
 		) : (
 			<>
@@ -62,30 +92,40 @@ const Tasks = memo(
 						<PageHeader
 							onBack={() => window.history.back()}
 							title='Задачи'
+							style={{ padding: '16px 0' }}
 							extra={[
-								<Button key='createTask' type='primary' onClick={handleToggleModal} icon={<FileAddOutlined />}>
+								<Button
+									key='createTask'
+									type='primary'
+									onClick={handleToggleModal}
+									icon={<FileAddOutlined />}
+								>
 									Создать задачу
 								</Button>
 							]}
 						></PageHeader>
 						<Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-							<Col span={6}>
+							<Col span={12}>
 								<Typography.Paragraph>Ожидание:</Typography.Paragraph>
 								{tasks.unfulfilled.map(task => (
-									<Task data={task} onTaskDelete={onTaskDelete} onTaskEdit={onTaskEdit} key={task.id} />
+									<Task
+										data={task}
+										onTaskDelete={onTaskDelete}
+										onTaskEdit={onTaskEdit}
+										key={task.id}
+									/>
 								))}
 							</Col>
-							<Col span={6}>
-								<Typography.Paragraph>Исполнение:</Typography.Paragraph>
-							</Col>
-							<Col span={6}>
-								<Typography.Paragraph>Проверка:</Typography.Paragraph>
-								{tasks.completed.map(task => (
-									<Task data={task} onTaskDelete={onTaskDelete} onTaskEdit={onTaskEdit} key={task.id} />
-								))}
-							</Col>
-							<Col span={6}>
+							<Col span={12}>
 								<Typography.Paragraph>Готово:</Typography.Paragraph>
+								{tasks.completed.map(task => (
+									<Task
+										data={task}
+										onTaskDelete={onTaskDelete}
+										onTaskEdit={onTaskEdit}
+										key={task.id}
+									/>
+								))}
 							</Col>
 						</Row>
 					</>
@@ -114,4 +154,6 @@ const Tasks = memo(
 	}
 )
 
-export default connect(null, { createTask, deleteTask, editTask, loadTasks })(Tasks)
+export default connect(null, { createTask, deleteTask, editTask, loadTasks })(
+	Tasks
+)
