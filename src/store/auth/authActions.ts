@@ -1,8 +1,8 @@
+import { Dispatch } from 'react'
 import { returnErrors } from '../error/errorActions'
 import firebase from 'firebase/app'
 import {
 	LOGIN_SUCCESS,
-	LOGIN_FAIL,
 	REGISTER_SUCCESS,
 	REGISTER_FAIL,
 	USER_LOADED,
@@ -10,18 +10,29 @@ import {
 	AUTH_ERROR,
 	LOGOUT_SUCCESS
 } from '../types'
+import { RootState, TypeDispatch } from '..'
 
-const createUser = ({ email, password, name }) => async dispatch => {
+export type TUser = {
+	email: string
+	password: string
+	name?: string
+}
+
+const createUser = ({ email, password, name }: TUser) => async (
+	dispatch: Dispatch<TypeDispatch>
+) => {
 	dispatch({ type: USER_LOADING })
 	try {
-		const res = await firebase.auth().createUserWithEmailAndPassword(email, password)
-		const { refreshToken, uid } = res.user
+		const res = await firebase
+			.auth()
+			.createUserWithEmailAndPassword(email, password)
+		const { refreshToken, uid }: any = res.user
 		await firebase.database().ref(`/users/${uid}/info`).set({
 			name,
 			password,
 			tasks: []
 		})
-		dispatch({ type: REGISTER_SUCCESS, payload: { token: refreshToken } })
+		dispatch({ type: REGISTER_SUCCESS, payload: { token: refreshToken, uid } })
 	} catch (error) {
 		dispatch(returnErrors(error.message, error.code))
 		dispatch({ type: REGISTER_FAIL })
@@ -29,11 +40,15 @@ const createUser = ({ email, password, name }) => async dispatch => {
 	}
 }
 
-const loginUser = ({ email, password }) => async dispatch => {
+const loginUser = ({ email, password }: TUser) => async (
+	dispatch: Dispatch<TypeDispatch>
+) => {
 	dispatch({ type: USER_LOADING })
 	try {
-		const res = await firebase.auth().signInWithEmailAndPassword(email, password)
-		const { refreshToken, uid } = res.user
+		const res = await firebase
+			.auth()
+			.signInWithEmailAndPassword(email, password)
+		const { refreshToken, uid }: any = res.user
 		dispatch({ type: LOGIN_SUCCESS, payload: { token: refreshToken, uid } })
 	} catch (error) {
 		dispatch(returnErrors(error.message, error.code))
@@ -42,7 +57,7 @@ const loginUser = ({ email, password }) => async dispatch => {
 	}
 }
 
-const logoutUser = () => async dispatch => {
+const logoutUser = () => async (dispatch: Dispatch<TypeDispatch>) => {
 	dispatch({ type: USER_LOADING })
 	try {
 		await firebase.auth().signOut()
@@ -53,7 +68,10 @@ const logoutUser = () => async dispatch => {
 	}
 }
 
-const loadUser = () => async (dispatch, getState) => {
+const loadUser = () => async (
+	dispatch: Dispatch<TypeDispatch>,
+	getState: () => RootState
+) => {
 	dispatch({ type: USER_LOADING })
 	try {
 		const { uid } = getState().auth

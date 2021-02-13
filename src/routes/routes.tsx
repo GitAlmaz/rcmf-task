@@ -8,7 +8,7 @@ const Tasks = lazy(() => import('../pages/Tasks'))
 const Login = lazy(() => import('../pages/Login'))
 const EmptyLayout = lazy(() => import('../layouts/EmptyLayout'))
 
-const useRoutes = isAuthenticated =>
+const useRoutes = (isAuthenticated: boolean) =>
 	isAuthenticated ? (
 		<Switch>
 			<DashboardLayout>
@@ -38,7 +38,20 @@ const useRoutes = isAuthenticated =>
 		</Switch>
 	) : (
 		<Switch>
-			<Suspense fallback='Loading ...'>
+			<Suspense
+				fallback={
+					<Spin
+						size='large'
+						style={{
+							width: '100%',
+							height: '100%',
+							display: 'flex',
+							justifyContent: 'center',
+							alignItems: 'center'
+						}}
+					/>
+				}
+			>
 				<Route exact path='/'>
 					<EmptyLayout>
 						<Login />

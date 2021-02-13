@@ -1,7 +1,31 @@
 import firebase from 'firebase/app'
-import { TASKS_LOADING, TASKS_LOADED, TASKS_FAIL } from '../types'
+import { Dispatch } from 'react'
+import { RootState, TypeDispatch } from '..'
+import { TASKS_LOADING, TASKS_LOADED } from '../types'
 
-const createTask = ({ title, description, status, create_date }) => async (dispatch, getState) => {
+export interface ICreateTask {
+	title: string
+	description: string
+	status: boolean
+	create_date: number
+}
+
+export interface IEditTask {
+	id: string
+	title: string
+	description: string
+	status: boolean
+}
+
+const createTask = ({
+	title,
+	description,
+	status,
+	create_date
+}: ICreateTask) => async (
+	dispatch: Dispatch<TypeDispatch>,
+	getState: () => RootState
+) => {
 	dispatch({ type: TASKS_LOADING })
 	try {
 		const { uid } = getState().auth
@@ -19,7 +43,10 @@ const createTask = ({ title, description, status, create_date }) => async (dispa
 	}
 }
 
-const deleteTask = (taskId) => async (dispatch, getState) => {
+const deleteTask = (taskId: string) => async (
+	dispatch: Dispatch<TypeDispatch>,
+	getState: () => RootState
+) => {
 	try {
 		const { uid } = getState().auth
 		await firebase.database().ref(`/users/${uid}/tasks/${taskId}`).remove()
@@ -28,7 +55,10 @@ const deleteTask = (taskId) => async (dispatch, getState) => {
 	}
 }
 
-const editTask = ({id, title, description, status}) => async (dispatch, getState) => {
+const editTask = ({ id, title, description, status }: IEditTask) => async (
+	dispatch: Dispatch<TypeDispatch>,
+	getState: () => RootState
+) => {
 	try {
 		const { uid } = getState().auth
 		await firebase.database().ref(`/users/${uid}/tasks/${id}`).update({
@@ -36,15 +66,18 @@ const editTask = ({id, title, description, status}) => async (dispatch, getState
 			description,
 			status
 		})
-	} catch(error) {
+	} catch (error) {
 		throw error
 	}
 }
 
-const loadTasks = () => async dispatch => {
+const loadTasks = () => async (
+	dispatch: Dispatch<TypeDispatch>,
+	getState: () => RootState
+) => {
 	dispatch({ type: TASKS_LOADING })
 	try {
-		const { uid } = await firebase.auth().currentUser
+		const { uid } = getState().auth
 		await firebase
 			.database()
 			.ref(`/users/${uid}/tasks`)

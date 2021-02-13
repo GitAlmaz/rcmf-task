@@ -1,14 +1,15 @@
-import React, { useEffect } from 'react'
-import { Layout, Button } from 'antd'
+import React, { ReactNode, useEffect } from 'react'
+import { Layout } from 'antd'
 import Navigation from '../components/Navigation'
 import { loadUser } from '../store/auth/authActions'
-import { connect } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 const { Content, Sider } = Layout
 
-const DashboardLayout = ({ children, loadUser }) => {
+const DashboardLayout = ({ children }: { children: ReactNode }) => {
+	const dispath = useDispatch()
 	useEffect(() => {
-		loadUser()
+		dispath(loadUser())
 	}, [])
 	return (
 		<>
@@ -22,4 +23,4 @@ const DashboardLayout = ({ children, loadUser }) => {
 	)
 }
 
-export default connect(null, { loadUser })(DashboardLayout)
+export default DashboardLayout

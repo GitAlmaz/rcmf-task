@@ -1,14 +1,14 @@
 import React, { memo } from 'react'
-import { Modal, Input, Form } from 'antd'
+import { Modal, Input, Form, FormInstance } from 'antd'
 
 type ModalProps = {
 	title: string
 	isModalVisible: boolean
-	handleOk(): Function
-	handleCancel(): Function
+	handleOk(): void
+	handleCancel(): void
 	okText: string
 	cancelText: string
-	form: any
+	form: FormInstance
 }
 
 export default memo(

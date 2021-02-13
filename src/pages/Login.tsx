@@ -1,26 +1,27 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Card, Form, Input, Button, Space } from 'antd'
-import { connect, useSelector } from 'react-redux'
-import { createUser, loginUser } from '../store/auth/authActions'
-
+import { useSelector, useDispatch } from 'react-redux'
+import { createUser, loginUser, TUser } from '../store/auth/authActions'
+import { RootState } from '../store'
 const { Item } = Form
 const { Password } = Input
 
-const Login = ({ createUser, loginUser }) => {
+const Login = () => {
+	const dispatch = useDispatch()
 	const history = useHistory()
-	const [hasAccount, setHasAccount] = useState(false)
+	const [hasAccount, setHasAccount] = useState<boolean>(false)
 	const [form] = Form.useForm()
-	const loading = useSelector(state => state.auth.isLoading)
+	const loading = useSelector((state: RootState) => state.auth.isLoading)
 
-	const submitHandler = async values => {
+	const submitHandler = async (values: TUser) => {
 		try {
-			hasAccount ? await loginUser(values) : await createUser(values)
-			history.push('/user_information')
+			hasAccount ? await dispatch(loginUser(values)) : await dispatch(createUser(values))
+			history.push('/tasks')
 		} catch (e) {}
 	}
 
-	const finishFailHandler = errorInfo => {
+	const finishFailHandler = (errorInfo: any) => {
 		console.log('Failed:', errorInfo)
 	}
 
@@ -30,28 +31,47 @@ const Login = ({ createUser, loginUser }) => {
 	}
 
 	return (
-		<Card title={hasAccount ? 'Авторизация' : 'Регистрация'} style={{ width: 400 }}>
-			<Form name='auth' form={form} onFinish={submitHandler} onFinishFailed={finishFailHandler}>
+		<Card
+			title={hasAccount ? 'Авторизация' : 'Регистрация'}
+			style={{ width: 400 }}
+		>
+			<Form
+				name='auth'
+				form={form}
+				onFinish={submitHandler}
+				onFinishFailed={finishFailHandler}
+			>
 				{!hasAccount && (
-					<Item name='name' rules={[{ required: true, message: 'Пожалуйста введите имя!' }]}>
+					<Item
+						name='name'
+						rules={[{ required: true, message: 'Пожалуйста введите имя!' }]}
+					>
 						<Input placeholder='Имя' />
 					</Item>
 				)}
-				<Item name='email' rules={[{ required: true, message: 'Пожалуйста введите почту!' }]}>
+				<Item
+					name='email'
+					rules={[{ required: true, message: 'Пожалуйста введите почту!' }]}
+				>
 					<Input placeholder='Email' />
 				</Item>
-				<Item name='password' rules={[{ required: true, message: 'Пожалуйста введите пароль!' }]}>
+				<Item
+					name='password'
+					rules={[{ required: true, message: 'Пожалуйста введите пароль!' }]}
+				>
 					<Password placeholder='Пароль' />
 				</Item>
 				<Space size='small'>
 					<Button type='primary' htmlType='submit' loading={loading}>
 						{hasAccount ? 'Войти' : 'Зарегестрироваться'}
 					</Button>
-					<Button onClick={hasAccountHandler}>{hasAccount ? 'Создать аккаунт' : 'Есть аккаунт ?'}</Button>
+					<Button onClick={hasAccountHandler}>
+						{hasAccount ? 'Создать аккаунт' : 'Есть аккаунт ?'}
+					</Button>
 				</Space>
 			</Form>
 		</Card>
 	)
 }
 
-export default connect(null, { createUser, loginUser })(Login)
+export default Login

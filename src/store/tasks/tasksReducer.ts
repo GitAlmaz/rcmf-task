@@ -1,11 +1,43 @@
 import { TASKS_LOADING, TASKS_LOADED, TASKS_FAIL } from '../types'
+export interface ITasksState {
+	tasks: {
+		completed: ITask[]
+		unfulfilled: ITask[]
+	}
+	isLoading: boolean
+}
+type TasksAction = {
+	type: string
+	payload?: object[]
+}
 
+export interface ITask {
+	id: string
+	title: string
+	description: string
+	status: boolean
+	create_date: number
+}
+interface ITaskLoadPayload {
+	[key: string]: {
+		title: string
+		description: string
+		status: boolean
+		create_date: number
+	}
+}
 const initialState = {
-	tasks: [],
+	tasks: {
+		completed: [],
+		unfulfilled: []
+	},
 	isLoading: false
 }
 
-const tasksReducer = (state = initialState, action) => {
+const tasksReducer = (
+	state: ITasksState = initialState,
+	action: TasksAction
+) => {
 	switch (action.type) {
 		case TASKS_LOADING:
 			return {
@@ -13,27 +45,14 @@ const tasksReducer = (state = initialState, action) => {
 				isLoading: true
 			}
 		case TASKS_LOADED:
-			const data = { ...action.payload }
+			const data = { ...action.payload } as ITaskLoadPayload
 			const obj = {
-				completed: [],
-				unfulfilled: []
+				completed: [] as object[],
+				unfulfilled: [] as object[]
 			}
-			// let arr = []
-			// for (const key in data) {
-			// 	arr = [
-			// 		...arr,
-			// 		{
-			// 			id: key,
-			// 			title: data[key].title,
-			// 			description: data[key].description,
-			// 			status: data[key].status,
-			// 			create_date: data[key].create_date
-			// 		}
-			// 	]
-			// }
-			
+
 			for (const key in data) {
-				let item = {
+				let item: ITask = {
 					id: key,
 					title: data[key].title,
 					description: data[key].description,
@@ -42,11 +61,13 @@ const tasksReducer = (state = initialState, action) => {
 				}
 				data[key].status ? obj.completed.push(item) : obj.unfulfilled.push(item)
 			}
-			console.log('obj', obj)
 			return {
 				...state,
 				isLoading: false,
-				tasks: obj
+				tasks: {
+					completed: [...obj.completed],
+					unfulfilled: [...obj.unfulfilled]
+				}
 			}
 		case TASKS_FAIL:
 			return {

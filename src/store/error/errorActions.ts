@@ -1,6 +1,6 @@
 import { GET_ERRORS, CLEAR_ERRORS } from '../types'
 
-const returnErrors = (message, code, id = null) => {
+const returnErrors = (message: string, code: number, id = null) => {
 	console.log(message, code);
 	return {
 		type: GET_ERRORS,

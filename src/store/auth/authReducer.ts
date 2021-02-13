@@ -16,8 +16,29 @@ const initialState = {
 	user: null,
 	uid: localStorage.getItem('uid')
 }
+export interface IAuthState {
+	token: string | null
+	isAuth: boolean | null
+	isLoading: boolean
+	user: {
+		info: {
+			name: string
+			password: string
+		}
+		tasks?: object[]
+	} | null
+	uid: string | null
+}
 
-const authReducer = (state = initialState, action) => {
+type AuthAction = {
+	type: string
+	payload: {
+		token: string
+		uid: string
+	}
+}
+
+const authReducer = (state: IAuthState = initialState, action: AuthAction) => {
 	switch (action.type) {
 		case USER_LOADING:
 			return {

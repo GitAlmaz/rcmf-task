@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react'
+import React, { ChangeEvent, memo, useState } from 'react'
 import { Card, Popconfirm, Input, Switch, Button, Typography } from 'antd'
 import {
 	DeleteTwoTone,
@@ -6,28 +6,31 @@ import {
 	CheckCircleTwoTone,
 	ClockCircleTwoTone
 } from '@ant-design/icons'
+import { ITask } from '../store/tasks/tasksReducer'
+import { IEditTask } from '../store/tasks/tasksActions'
 
 type TaskProps = {
-	data: {
-		id: number,
-		title: string,
-		description: string,
-		status: boolean,
-		create_date: number
-	},
-	onTaskDelete: Function,
-	onTaskEdit: Function
+	data: ITask
+	onTaskDelete(data: ITask): void
+	onTaskEdit(data: DynamicInputState | IEditTask): void
+}
+type DynamicInputState = {
+	[key: string]: string | boolean
 }
 
-const Task = ({ data, onTaskDelete, onTaskEdit }:TaskProps) => {
+const Task = ({ data, onTaskDelete, onTaskEdit }: TaskProps) => {
 	const [edit, setEdit] = useState(false)
 	const editData = {
 		id: data.id,
 		title: data.title,
 		description: data.description,
 		status: data.status
-	}
-	const changeHandler = event => {
+	} as DynamicInputState
+	const createDate = `${new Date(data.create_date).getDate()}.${new Date(
+		data.create_date
+	).getMonth()}.${new Date(data.create_date).getFullYear()}`
+	
+	const changeHandler = (event: ChangeEvent<HTMLInputElement>) => {
 		if (typeof event === 'boolean') {
 			editData.status = event
 		} else {
@@ -35,6 +38,7 @@ const Task = ({ data, onTaskDelete, onTaskEdit }:TaskProps) => {
 			editData[name] = value
 		}
 	}
+
 	return (
 		<Card
 			title={
@@ -72,15 +76,16 @@ const Task = ({ data, onTaskDelete, onTaskEdit }:TaskProps) => {
 		>
 			{edit ? (
 				<>
-					<Input.TextArea
+					<Input
 						name='description'
 						size='small'
 						placeholder='Описание'
+						type='textarea'
 						defaultValue={data.description}
 						style={{ marginBottom: 5 }}
 						onChange={changeHandler}
 					/>
-					<Typography.Paragraph>
+					{/* <Typography.Paragraph>
 						Статус:
 						<Switch
 							size='small'
@@ -88,7 +93,7 @@ const Task = ({ data, onTaskDelete, onTaskEdit }:TaskProps) => {
 							style={{ marginLeft: 10 }}
 							onChange={changeHandler}
 						/>
-					</Typography.Paragraph>
+					</Typography.Paragraph> */}
 					<Button
 						htmlType='submit'
 						size='small'
@@ -123,21 +128,17 @@ const Task = ({ data, onTaskDelete, onTaskEdit }:TaskProps) => {
 					</Typography.Paragraph>
 					<Typography.Paragraph style={{ marginBottom: 0 }}>
 						Создана:
-						{` ${new Date(data.create_date).getDate()}.${new Date(
-							data.create_date
-						).getMonth()}.${new Date(data.create_date).getFullYear()}`}
+						{createDate}
 					</Typography.Paragraph>
 				</>
 			)}
 		</Card>
 	)
 }
-export default memo(Task,
-	(prev, next) => {
-		if (prev.data !== next.data) {
-			return false
-		} else {
-			return true
-		}
+export default memo(Task, (prev, next) => {
+	if (prev.data !== next.data) {
+		return false
+	} else {
+		return true
 	}
-)
+})
