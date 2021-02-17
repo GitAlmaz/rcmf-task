@@ -1,5 +1,5 @@
-import React, { memo } from 'react'
-import { useSelector } from 'react-redux'
+import React from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { NavLink, Link } from 'react-router-dom'
 import { Menu } from 'antd'
 import {
@@ -18,7 +18,11 @@ const { SubMenu } = Menu
 
 const Navigation = () => {
 	const { user } = useSelector((state: RootState) => state.auth)
-	console.log('Navigation is render')
+	const dispatch = useDispatch()
+	// console.log('Navigation is render')
+	const logOutHandler = () => {
+		dispatch(logoutUser())
+	}
 	return (
 		<>
 			<NavLink to='/'>
@@ -26,7 +30,7 @@ const Navigation = () => {
 					<img src={Logo} alt='' />
 				</div>
 			</NavLink>
-			<Menu theme='dark' mode='vertical' defaultSelectedKeys={['user_info']}>
+			<Menu theme='dark' mode='vertical' defaultSelectedKeys={['tests']}>
 				<SubMenu
 					key='user'
 					title={user ? user.info.name : <LoadingOutlined />}
@@ -39,7 +43,7 @@ const Navigation = () => {
 					<Menu.Item
 						key='user_logout'
 						icon={<LogoutOutlined />}
-						onClick={logoutUser}
+						onClick={logOutHandler}
 					>
 						Выйти
 						<Link to='/' />
@@ -48,6 +52,10 @@ const Navigation = () => {
 				<Menu.Item key='tasks' icon={<BookOutlined />}>
 					Задачи
 					<Link to='/tasks' />
+				</Menu.Item>
+				<Menu.Item key='tests' icon={<BookOutlined />}>
+					Тестирование
+					<Link to='/tests' />
 				</Menu.Item>
 			</Menu>
 		</>

@@ -5,6 +5,7 @@ import DashboardLayout from '../layouts/DashboardLayout'
 
 const Main = lazy(() => import('../pages/Main'))
 const Tasks = lazy(() => import('../pages/Tasks'))
+const Tests = lazy(() => import('../pages/Tests'))
 const Login = lazy(() => import('../pages/Login'))
 const EmptyLayout = lazy(() => import('../layouts/EmptyLayout'))
 
@@ -29,8 +30,11 @@ const useRoutes = (isAuthenticated: boolean) =>
 					<Route exact path='/'>
 						<Main />
 					</Route>
-					<Route exact path='/tasks'>
+					<Route path='/tasks'>
 						<Tasks />
+					</Route>
+					<Route path='/tests'>
+						<Tests />
 					</Route>
 				</Suspense>
 			</DashboardLayout>

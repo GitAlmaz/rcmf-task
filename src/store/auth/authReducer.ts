@@ -23,7 +23,8 @@ export interface IAuthState {
 	user: {
 		info: {
 			name: string
-			password: string
+			password: string,
+			admin: boolean | null
 		}
 		tasks?: object[]
 	} | null

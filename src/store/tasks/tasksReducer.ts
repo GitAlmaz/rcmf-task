@@ -34,10 +34,7 @@ const initialState = {
 	isLoading: false
 }
 
-const tasksReducer = (
-	state: ITasksState = initialState,
-	action: TasksAction
-) => {
+const tasksReducer = (state: ITasksState = initialState, action: TasksAction) => {
 	switch (action.type) {
 		case TASKS_LOADING:
 			return {
@@ -45,29 +42,10 @@ const tasksReducer = (
 				isLoading: true
 			}
 		case TASKS_LOADED:
-			const data = { ...action.payload } as ITaskLoadPayload
-			const obj = {
-				completed: [] as object[],
-				unfulfilled: [] as object[]
-			}
-
-			for (const key in data) {
-				let item: ITask = {
-					id: key,
-					title: data[key].title,
-					description: data[key].description,
-					status: data[key].status,
-					create_date: data[key].create_date
-				}
-				data[key].status ? obj.completed.push(item) : obj.unfulfilled.push(item)
-			}
 			return {
 				...state,
 				isLoading: false,
-				tasks: {
-					completed: [...obj.completed],
-					unfulfilled: [...obj.unfulfilled]
-				}
+				tasks: action.payload
 			}
 		case TASKS_FAIL:
 			return {
