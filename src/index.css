@@ -21,3 +21,28 @@ button {
   padding: 0;
   cursor: pointer;
 }
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+  background-color: #f0f2f5;
+}
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected::before {
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background-color: #1890ff;
+  box-shadow: 1px 0px 10px rgba(42, 139, 242, 0.45), 0px 0px 10px rgba(42, 139, 242, 0.55), 4px 0px 25px rgba(42, 139, 242, 0.75);
+}
+
+.ant-card {
+  box-shadow: 0 20px 30px -16px rgb(9 9 16 / 20%);
+}
+.ant-layout-sider-trigger {
+  color: #002140;
+  background: #fff;
+}
+.ant-layout-sider-children {
+  display: flex;
+  flex-direction: column;
+}

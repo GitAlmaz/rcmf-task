@@ -7,6 +7,8 @@ const Main = lazy(() => import('../pages/Main'))
 const Tasks = lazy(() => import('../pages/Tasks'))
 const Tests = lazy(() => import('../pages/Tests'))
 const Login = lazy(() => import('../pages/Login'))
+const Testing = lazy(() => import('../pages/Testing'))
+
 const EmptyLayout = lazy(() => import('../layouts/EmptyLayout'))
 
 const useRoutes = (isAuthenticated: boolean) =>
@@ -27,15 +29,10 @@ const useRoutes = (isAuthenticated: boolean) =>
 						/>
 					}
 				>
-					<Route exact path='/'>
-						<Main />
-					</Route>
-					<Route path='/tasks'>
-						<Tasks />
-					</Route>
-					<Route path='/tests'>
-						<Tests />
-					</Route>
+					<Route exact path='/' component={Main} />
+					<Route exact path='/tasks' component={Tasks} />
+					<Route exact path='/tests' component={Tests} />
+					<Route exact path='/tests/:id' component={Testing} />
 				</Suspense>
 			</DashboardLayout>
 			<Redirect to='/' />

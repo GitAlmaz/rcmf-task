@@ -1,4 +1,4 @@
-import { GET_ERRORS, CLEAR_ERRORS } from '../types'
+import { Type } from '../types'
 
 const initialState = {
 	message: null,
@@ -24,13 +24,13 @@ const errorReducer = (
 	action: TErrorAction
 ) => {
 	switch (action.type) {
-		case GET_ERRORS:
+		case Type.GET_ERRORS:
 			return {
 				message: action.payload.message,
 				code: action.payload.code,
 				id: action.payload.id
 			}
-		case CLEAR_ERRORS:
+		case Type.CLEAR_ERRORS:
 			return {
 				message: null,
 				code: null,

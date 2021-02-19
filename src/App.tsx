@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { Provider, useSelector } from 'react-redux'
 import { useRoutes } from './routes/routes'
-import { RootState } from './store'
+import { store } from './store'
+import { RootState } from './store/types'
 
-const App = () => {
-	const isAuth = !!useSelector((state:RootState) => state.auth.token)
+const App: React.FC = () => {
+	const isAuth = !!useSelector((state: RootState) => state.auth.token)
 	const routes = useRoutes(isAuth)
 	useEffect(() => {
 		console.log('isAuth is: ', isAuth)
@@ -14,4 +15,10 @@ const App = () => {
 	return <Router>{routes}</Router>
 }
 
-export default App
+const app = (
+	<Provider store={store}>
+		<App />
+	</Provider>
+)
+
+export default app

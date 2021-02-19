@@ -1,27 +1,13 @@
 import firebase from 'firebase/app'
 import { Dispatch } from 'react'
-import { RootState, TypeDispatch } from '..'
-import { TASKS_LOADING, TASKS_LOADED } from '../types'
-import { ITask } from './tasksReducer'
-export interface ICreateTask {
-	title: string
-	description: string
-	status: boolean
-	create_date: number
-}
-
-export interface IEditTask {
-	id: string
-	title: string
-	description: string
-	status: boolean
-}
+import { ICreateTask, IEditTask, ITask } from '../types/tasks'
+import { Type, RootState, TypeDispatch } from '../types'
 
 const createTask = ({ title, description, status, create_date }: ICreateTask) => async (
 	dispatch: Dispatch<TypeDispatch>,
 	getState: () => RootState
 ) => {
-	dispatch({ type: TASKS_LOADING })
+	dispatch({ type: Type.TASKS_LOADING })
 	try {
 		const { uid } = getState().auth
 		await firebase
@@ -64,7 +50,7 @@ const editTask = ({ id, title, description, status }: IEditTask) => async (
 }
 
 const loadTasks = () => async (dispatch: Dispatch<TypeDispatch>, getState: () => RootState) => {
-	dispatch({ type: TASKS_LOADING })
+	dispatch({ type: Type.TASKS_LOADING })
 	try {
 		const { uid } = getState().auth
 		await firebase
@@ -86,7 +72,7 @@ const loadTasks = () => async (dispatch: Dispatch<TypeDispatch>, getState: () =>
 					}
 					data[key].status ? obj.completed.push(item) : obj.unfulfilled.push(item)
 				}
-				dispatch({ type: TASKS_LOADED, payload: obj })
+				dispatch({ type: Type.TASKS_LOADED, payload: obj })
 			})
 	} catch (error) {
 		throw error

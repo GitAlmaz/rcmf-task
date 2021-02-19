@@ -1,27 +1,13 @@
 import { Dispatch } from 'react'
 import { returnErrors } from '../error/errorActions'
 import firebase from 'firebase/app'
-import {
-	LOGIN_SUCCESS,
-	REGISTER_SUCCESS,
-	REGISTER_FAIL,
-	USER_LOADED,
-	USER_LOADING,
-	AUTH_ERROR,
-	LOGOUT_SUCCESS
-} from '../types'
-import { RootState, TypeDispatch } from '..'
-
-export type TUser = {
-	email: string
-	password: string
-	name?: string
-}
+import { Type, RootState, TypeDispatch } from '../types'
+import { TUser } from '../types/auth'
 
 const createUser = ({ email, password, name }: TUser) => async (
 	dispatch: Dispatch<TypeDispatch>
 ) => {
-	dispatch({ type: USER_LOADING })
+	dispatch({ type: Type.USER_LOADING })
 	try {
 		const res = await firebase
 			.auth()
@@ -32,10 +18,10 @@ const createUser = ({ email, password, name }: TUser) => async (
 			password,
 			tasks: []
 		})
-		dispatch({ type: REGISTER_SUCCESS, payload: { token: refreshToken, uid } })
+		dispatch({ type: Type.REGISTER_SUCCESS, payload: { token: refreshToken, uid } })
 	} catch (error) {
 		dispatch(returnErrors(error.message, error.code))
-		dispatch({ type: REGISTER_FAIL })
+		dispatch({ type: Type.REGISTER_FAIL })
 		throw error
 	}
 }
@@ -43,28 +29,28 @@ const createUser = ({ email, password, name }: TUser) => async (
 const loginUser = ({ email, password }: TUser) => async (
 	dispatch: Dispatch<TypeDispatch>
 ) => {
-	dispatch({ type: USER_LOADING })
+	dispatch({ type: Type.USER_LOADING })
 	try {
 		const res = await firebase
 			.auth()
 			.signInWithEmailAndPassword(email, password)
 		const { refreshToken, uid }: any = res.user
-		dispatch({ type: LOGIN_SUCCESS, payload: { token: refreshToken, uid } })
+		dispatch({ type: Type.LOGIN_SUCCESS, payload: { token: refreshToken, uid } })
 	} catch (error) {
 		dispatch(returnErrors(error.message, error.code))
-		dispatch({ type: AUTH_ERROR })
+		dispatch({ type: Type.AUTH_ERROR })
 		throw error
 	}
 }
 
 const logoutUser = () => async (dispatch: Dispatch<TypeDispatch>) => {
-	dispatch({ type: USER_LOADING })
+	dispatch({ type: Type.USER_LOADING })
 	try {
 		await firebase.auth().signOut()
-		dispatch({ type: LOGOUT_SUCCESS })
+		dispatch({ type: Type.LOGOUT_SUCCESS })
 	} catch (error) {
 		dispatch(returnErrors(error.message, error.code))
-		dispatch({ type: AUTH_ERROR })
+		dispatch({ type: Type.AUTH_ERROR })
 	}
 }
 
@@ -72,23 +58,23 @@ const loadUser = () => async (
 	dispatch: Dispatch<TypeDispatch>,
 	getState: () => RootState
 ) => {
-	dispatch({ type: USER_LOADING })
+	dispatch({ type: Type.USER_LOADING })
 	try {
 		const { uid } = getState().auth
 		if (!uid) {
-			dispatch({ type: AUTH_ERROR })
+			dispatch({ type: Type.AUTH_ERROR })
 		} else {
 			await firebase
 				.database()
 				.ref(`/users/${uid}`)
 				.on('value', async snapshot => {
 					const data = await snapshot.val()
-					dispatch({ type: USER_LOADED, payload: { ...data, uid } })
+					dispatch({ type: Type.USER_LOADED, payload: { ...data, uid } })
 				})
 		}
 	} catch (error) {
 		dispatch(returnErrors(error, error))
-		dispatch({ type: AUTH_ERROR })
+		dispatch({ type: Type.AUTH_ERROR })
 	}
 }
 

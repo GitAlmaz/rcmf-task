@@ -1,16 +1,16 @@
-import { GET_ERRORS, CLEAR_ERRORS } from '../types'
+import { Type } from '../types'
 
 const returnErrors = (message: string, code: number, id = null) => {
 	console.log(message, code);
 	return {
-		type: GET_ERRORS,
+		type: Type.GET_ERRORS,
 		payload: { message, code, id }
 	}
 }
 
 const clearError = () => {
 	return {
-		type: CLEAR_ERRORS
+		type: Type.CLEAR_ERRORS
 	}
 }
 

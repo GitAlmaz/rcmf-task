@@ -14,10 +14,21 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
 	return (
 		<>
 			<Layout style={{ minHeight: '100vh' }}>
-				<Sider width={250} collapsible defaultCollapsed={false}>
+				<Sider
+					width={250}
+					style={{
+						overflow: 'auto',
+						height: '100vh',
+						position: 'fixed',
+						left: 0,
+						background: '#fff'
+					}}
+					collapsible
+					defaultCollapsed={false}
+				>
 					<Navigation />
 				</Sider>
-				<Content style={{ padding: '48px' }}>{children}</Content>
+				<Content style={{ padding: '48px', marginLeft: 250 }}>{children}</Content>
 			</Layout>
 		</>
 	)

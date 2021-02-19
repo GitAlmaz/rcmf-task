@@ -9,7 +9,7 @@ import {
 	RadarChartOutlined,
 	LoadingOutlined
 } from '@ant-design/icons'
-import { RootState } from '../store'
+import { RootState } from '../store/types'
 import { logoutUser } from '../store/auth/authActions'
 import Logo from '../assets/img/logo.svg'
 import './styles/_logo.scss'
@@ -27,10 +27,10 @@ const Navigation = () => {
 		<>
 			<NavLink to='/'>
 				<div className='logo'>
-					<img src={Logo} alt='' />
+					<img src={Logo} alt='Logo atom' />
 				</div>
 			</NavLink>
-			<Menu theme='dark' mode='vertical' defaultSelectedKeys={['tests']}>
+			<Menu mode='vertical' defaultSelectedKeys={['tests']}>
 				<SubMenu
 					key='user'
 					title={user ? user.info.name : <LoadingOutlined />}

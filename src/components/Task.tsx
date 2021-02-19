@@ -6,8 +6,7 @@ import {
 	CheckCircleTwoTone,
 	ClockCircleTwoTone
 } from '@ant-design/icons'
-import { ITask } from '../store/tasks/tasksReducer'
-import { IEditTask } from '../store/tasks/tasksActions'
+import { ITask, IEditTask } from '../store/types/tasks'
 
 type TaskProps = {
 	data: ITask

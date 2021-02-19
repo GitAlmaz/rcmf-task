@@ -1,29 +1,28 @@
-import { combineReducers } from 'redux'
+import {
+	applyMiddleware,
+	combineReducers,
+	createStore,
+	Store,
+	Middleware,
+	Reducer
+} from 'redux'
 import { tasksReducer } from './tasks/tasksReducer'
 import { errorReducer } from './error/errorReducer'
 import { authReducer } from './auth/authReducer'
 import { testReducer } from './tests/testsReducer'
-import { ITasksState } from './tasks/tasksReducer'
-import { IAuthState } from './auth/authReducer'
-import { ITestsState } from './tests/testsReducer'
+import { RootState } from './types'
+import thunk from 'redux-thunk'
 
-export interface RootState {
-	tasks: ITasksState
-	error: any
-	auth: IAuthState
-	tests: ITestsState
-}
+const middlewares: Middleware[] = [thunk]
 
-export type TypeDispatch = {
-	type: string
-	payload?: object
-}
-
-const rootReducer = combineReducers({
+const rootReducer: Reducer = combineReducers({
 	tasks: tasksReducer,
 	error: errorReducer,
 	auth: authReducer,
 	tests: testReducer
 })
 
-export { rootReducer }
+export const store: Store<RootState> = createStore(
+	rootReducer,
+	applyMiddleware(...middlewares)
+)

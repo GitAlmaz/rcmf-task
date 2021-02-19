@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Form, Empty, Button, Spin, PageHeader, Input, Select, Alert } from 'antd'
+import { Form, Empty, Button, Spin, PageHeader, Input, Select, Alert, Space } from 'antd'
 import { FileAddOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
 import { createTest, loadTests } from '../store/tests/testsActions'
-import { ICreateTest, ITest } from '../store/tests/testsReducer'
+import { ICreateTest, ITest } from '../store/types/tests'
 import CreateModal from '../components/CreateModal'
-import { RootState } from '../store'
+import { RootState } from '../store/types'
 import TestCard from '../components/TestCard'
+import { useHistory } from 'react-router-dom'
 
 const Tasks = () => {
-	const tests = useSelector((state: RootState) => state.tests.tests)
+	const { tests, isLoading } = useSelector((state: RootState) => state.tests)
 	const isAdmin = useSelector((state: RootState) => state.auth.user?.info.admin)
-	const isLoading = useSelector((state: RootState) => state.tests.isLoading)
 	const dispatch = useDispatch()
 	const [modalVisible, setModalVisible] = useState(false)
 	const [form] = Form.useForm()
 	const { Option } = Select
+	const history = useHistory()
 
 	const submitHandler = async (values: ICreateTest) => {
 		try {
@@ -37,13 +38,13 @@ const Tasks = () => {
 	}
 
 	const handleToggleModal = () => {
-		console.log(isAdmin)
 		setModalVisible(!modalVisible)
 		form.resetFields()
 	}
 
 	useEffect(() => {
-		;(async () => await dispatch(loadTests()))()
+		dispatch(loadTests())
+		console.log(tests)
 	}, [])
 
 	return isLoading ? (
@@ -152,12 +153,11 @@ const Tasks = () => {
 					</Form>
 				</CreateModal>
 			) : null}
-
 			{tests.length ? (
 				<>
 					<PageHeader
-						onBack={() => window.history.back()}
-						title='Тесты'
+						onBack={() => history.push('/')}
+						title='Список тестов'
 						style={{ padding: '16px 0' }}
 						extra={isAdmin ? [
 							<Button key='createTask' type='primary' onClick={handleToggleModal} icon={<FileAddOutlined />}>
@@ -165,11 +165,13 @@ const Tasks = () => {
 							</Button>
 						] : null}
 					></PageHeader>
-					{tests.map((test) => {
-						return (
-							<TestCard key={test.id} data={test} />
-						)
-					})}
+					<Space wrap>
+						{tests.map((test) => {
+							return (
+								<TestCard key={test.id} data={test} />
+							)
+						})}
+					</Space>
 				</>
 			) : (
 				<Empty

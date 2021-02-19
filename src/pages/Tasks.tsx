@@ -15,13 +15,12 @@ import {
 	createTask,
 	deleteTask,
 	editTask,
-	ICreateTask,
-	IEditTask,
 	loadTasks
 } from '../store/tasks/tasksActions'
 import CreateTaskModal from '../components/CreateTaskModal'
 import Task from '../components/Task'
-import { RootState } from '../store'
+import { RootState } from '../store/types'
+import {ICreateTask, IEditTask} from '../store/types/tasks'
 
 const Tasks = ()=> {
 	const tasks = useSelector((state: RootState) => state.tasks.tasks)

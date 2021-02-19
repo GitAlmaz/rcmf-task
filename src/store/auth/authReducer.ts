@@ -1,13 +1,5 @@
-import {
-	LOGIN_SUCCESS,
-	LOGIN_FAIL,
-	REGISTER_SUCCESS,
-	REGISTER_FAIL,
-	USER_LOADED,
-	USER_LOADING,
-	AUTH_ERROR,
-	LOGOUT_SUCCESS
-} from '../types'
+import { Type } from '../types'
+import { IAuthState, AuthAction } from '../types/auth'
 
 const initialState = {
 	token: localStorage.getItem('token'),
@@ -16,45 +8,23 @@ const initialState = {
 	user: null,
 	uid: localStorage.getItem('uid')
 }
-export interface IAuthState {
-	token: string | null
-	isAuth: boolean | null
-	isLoading: boolean
-	user: {
-		info: {
-			name: string
-			password: string,
-			admin: boolean | null
-		}
-		tasks?: object[]
-	} | null
-	uid: string | null
-}
-
-type AuthAction = {
-	type: string
-	payload: {
-		token: string
-		uid: string
-	}
-}
 
 const authReducer = (state: IAuthState = initialState, action: AuthAction) => {
 	switch (action.type) {
-		case USER_LOADING:
+		case Type.USER_LOADING:
 			return {
 				...state,
 				isLoading: true
 			}
-		case USER_LOADED:
+		case Type.USER_LOADED:
 			return {
 				...state,
 				isAuth: true,
 				isLoading: false,
 				user: action.payload
 			}
-		case LOGIN_SUCCESS:
-		case REGISTER_SUCCESS:
+		case Type.LOGIN_SUCCESS:
+		case Type.REGISTER_SUCCESS:
 			localStorage.setItem('token', action.payload.token)
 			localStorage.setItem('uid', action.payload.uid)
 			return {
@@ -63,10 +33,10 @@ const authReducer = (state: IAuthState = initialState, action: AuthAction) => {
 				isAuth: true,
 				isLoading: false
 			}
-		case AUTH_ERROR:
-		case LOGIN_FAIL:
-		case LOGOUT_SUCCESS:
-		case REGISTER_FAIL:
+		case Type.AUTH_ERROR:
+		case Type.LOGIN_FAIL:
+		case Type.LOGOUT_SUCCESS:
+		case Type.REGISTER_FAIL:
 			localStorage.removeItem('token')
 			localStorage.removeItem('uid')
 			return {

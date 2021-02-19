@@ -1,31 +1,7 @@
-import { TASKS_LOADING, TASKS_LOADED, TASKS_FAIL } from '../types'
-export interface ITasksState {
-	tasks: {
-		completed: ITask[]
-		unfulfilled: ITask[]
-	}
-	isLoading: boolean
-}
-type TasksAction = {
-	type: string
-	payload?: object[]
-}
+import { Reducer } from 'redux'
+import { Type } from '../types'
+import {ITasksState, AnyAction} from '../types/tasks'
 
-export interface ITask {
-	id: string
-	title: string
-	description: string
-	status: boolean
-	create_date: number
-}
-interface ITaskLoadPayload {
-	[key: string]: {
-		title: string
-		description: string
-		status: boolean
-		create_date: number
-	}
-}
 const initialState = {
 	tasks: {
 		completed: [],
@@ -34,20 +10,20 @@ const initialState = {
 	isLoading: false
 }
 
-const tasksReducer = (state: ITasksState = initialState, action: TasksAction) => {
+const tasksReducer: Reducer = (state: ITasksState = initialState, action: AnyAction) => {
 	switch (action.type) {
-		case TASKS_LOADING:
+		case Type.TASKS_LOADING:
 			return {
 				...state,
 				isLoading: true
 			}
-		case TASKS_LOADED:
+		case Type.TASKS_LOADED:
 			return {
 				...state,
 				isLoading: false,
 				tasks: action.payload
 			}
-		case TASKS_FAIL:
+		case Type.TASKS_FAIL:
 			return {
 				...state,
 				isLoading: false

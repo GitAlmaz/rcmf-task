@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Card, Form, Input, Button, Space } from 'antd'
 import { useSelector, useDispatch } from 'react-redux'
-import { createUser, loginUser, TUser } from '../store/auth/authActions'
-import { RootState } from '../store'
+import { createUser, loginUser } from '../store/auth/authActions'
+import { RootState } from '../store/types'
+import { TUser } from '../store/types/auth'
 const { Item } = Form
 const { Password } = Input
 
@@ -17,7 +18,7 @@ const Login = () => {
 	const submitHandler = async (values: TUser) => {
 		try {
 			hasAccount ? await dispatch(loginUser(values)) : await dispatch(createUser(values))
-			history.push('/tasks')
+			history.push('/tests')
 		} catch (e) {}
 	}
 

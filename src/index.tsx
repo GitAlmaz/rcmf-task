@@ -1,11 +1,6 @@
-import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
-import App from './App'
-import { createStore, applyMiddleware, Middleware } from 'redux'
-import { rootReducer } from './store'
-import { Provider } from 'react-redux'
-import thunk from 'redux-thunk'
+import app from './App'
 
 import firebase from 'firebase/app'
 import 'firebase/auth'
@@ -20,14 +15,6 @@ firebase.initializeApp({
 	messagingSenderId: '212326817908',
 	appId: '1:212326817908:web:41ed3be6712a6174f07121'
 })
-
-const store = createStore(rootReducer, applyMiddleware<Middleware>(thunk))
-
-const app = (
-	<Provider store={store}>
-		<App />
-	</Provider>
-)
 
 let isRendered: void | boolean
 
