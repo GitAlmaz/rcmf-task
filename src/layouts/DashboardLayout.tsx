@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import { Layout } from 'antd'
 import Navigation from '../components/Navigation'
 import { loadUser } from '../store/auth/authActions'
@@ -8,6 +8,7 @@ const { Content, Sider } = Layout
 
 const DashboardLayout = ({ children }: { children: ReactNode }) => {
 	const dispath = useDispatch()
+	const [collapsed, setCollapsed] = useState(false)
 	useEffect(() => {
 		dispath(loadUser())
 	}, [])
@@ -16,6 +17,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
 			<Layout style={{ minHeight: '100vh' }}>
 				<Sider
 					width={250}
+					theme="light"
 					style={{
 						overflow: 'auto',
 						height: '100vh',
@@ -25,10 +27,11 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
 					}}
 					collapsible
 					defaultCollapsed={false}
+					onCollapse={() => setCollapsed(!collapsed)}
 				>
 					<Navigation />
 				</Sider>
-				<Content style={{ padding: '48px', marginLeft: 250 }}>{children}</Content>
+				<Content style={{ padding: '48px', marginLeft: collapsed ? 80 : 250, transition: '0.2s' }}>{children}</Content>
 			</Layout>
 		</>
 	)

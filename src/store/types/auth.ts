@@ -10,6 +10,7 @@ export interface IAuthState {
 	isLoading: boolean
 	user: {
 		info: {
+			email: string
 			name: string
 			password: string,
 			admin: boolean | null

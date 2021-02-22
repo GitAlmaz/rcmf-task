@@ -10,6 +10,7 @@ import { tasksReducer } from './tasks/tasksReducer'
 import { errorReducer } from './error/errorReducer'
 import { authReducer } from './auth/authReducer'
 import { testReducer } from './tests/testsReducer'
+import { usersReducer } from './users/usersReducer'
 import { RootState } from './types'
 import thunk from 'redux-thunk'
 
@@ -19,7 +20,8 @@ const rootReducer: Reducer = combineReducers({
 	tasks: tasksReducer,
 	error: errorReducer,
 	auth: authReducer,
-	tests: testReducer
+	tests: testReducer,
+	users: usersReducer
 })
 
 export const store: Store<RootState> = createStore(

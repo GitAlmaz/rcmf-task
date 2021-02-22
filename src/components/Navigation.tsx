@@ -7,7 +7,9 @@ import {
 	BookOutlined,
 	LogoutOutlined,
 	RadarChartOutlined,
-	LoadingOutlined
+	LoadingOutlined,
+	FormOutlined,
+	TeamOutlined
 } from '@ant-design/icons'
 import { RootState } from '../store/types'
 import { logoutUser } from '../store/auth/authActions'
@@ -17,7 +19,7 @@ import './styles/_logo.scss'
 const { SubMenu } = Menu
 
 const Navigation = () => {
-	const { user } = useSelector((state: RootState) => state.auth)
+	const { user, isLoading } = useSelector((state: RootState) => state.auth)
 	const dispatch = useDispatch()
 	// console.log('Navigation is render')
 	const logOutHandler = () => {
@@ -53,10 +55,16 @@ const Navigation = () => {
 					Задачи
 					<Link to='/tasks' />
 				</Menu.Item>
-				<Menu.Item key='tests' icon={<BookOutlined />}>
+				<Menu.Item key='tests' icon={<FormOutlined />}>
 					Тестирование
 					<Link to='/tests' />
 				</Menu.Item>
+				{user?.info.admin && (
+					<Menu.Item key='users' icon={<TeamOutlined />}>
+						Пользователи
+						<Link to='/users' />
+					</Menu.Item>
+				)}
 			</Menu>
 		</>
 	)

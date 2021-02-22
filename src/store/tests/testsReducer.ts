@@ -5,10 +5,13 @@ const initialState: ITestsState = {
 	tests: [],
 	isLoading: false,
 	test: {
+		id: '',
 		title: '',
 		subject: '',
-		questions: []
-	}
+		questions: [],
+	},
+	showResult: false,
+	result: 0
 }
 
 const testReducer = (
@@ -33,12 +36,29 @@ const testReducer = (
 				isLoading: false
 			}
 		case Type.TEST_LOADED:
-			console.log(action.payload);
-			
 			return {
 				...state,
 				isLoading: false,
 				test: action.payload
+			}
+		case Type.TEST_FINISHED:
+			return {
+				...state,
+				isLoading: false,
+				result: action.payload,
+				showResult: true
+			}
+		case Type.TEST_RESET: 
+			return {
+				...state,
+				result: 0,
+				test: {
+					id: '',
+					title: '',
+					subject: '',
+					questions: [],
+				},
+				showResult: false
 			}
 		default:
 			return state

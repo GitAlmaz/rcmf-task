@@ -96,6 +96,7 @@ const Task = ({ data, onTaskDelete, onTaskEdit }: TaskProps) => {
 					<Button
 						htmlType='submit'
 						size='small'
+						type="primary"
 						onClick={() => {
 							setEdit(!edit)
 							onTaskEdit(editData)

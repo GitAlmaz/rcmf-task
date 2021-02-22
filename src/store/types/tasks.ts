@@ -30,7 +30,7 @@ export interface AnyAction {
 	type: string,
 	payload?: object
 }
-interface ITaskLoadPayload {
+export interface IFireBaseTask {
 	[key: string]: {
 		title: string
 		description: string

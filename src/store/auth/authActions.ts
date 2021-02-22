@@ -15,8 +15,8 @@ const createUser = ({ email, password, name }: TUser) => async (
 		const { refreshToken, uid }: any = res.user
 		await firebase.database().ref(`/users/${uid}/info`).set({
 			name,
-			password,
-			tasks: []
+			email,
+			password
 		})
 		dispatch({ type: Type.REGISTER_SUCCESS, payload: { token: refreshToken, uid } })
 	} catch (error) {

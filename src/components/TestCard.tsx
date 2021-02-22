@@ -41,7 +41,8 @@ const TestCard = ({ data }: TestCardProps) => {
 				</Popconfirm>
 				) : null
 			}
-			style={{width: 250}}
+			size="small"
+			style={{width: 300}}
 		>
 			<Typography.Paragraph
 				ellipsis={{ rows: 3, expandable: true, symbol: 'еще' }}

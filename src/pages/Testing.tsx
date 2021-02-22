@@ -37,6 +37,7 @@ const Testing = () => {
 
 	const finishHandler = (values: object) => {
 		dispatch(finishTest(values))
+		history.push('/tests')
 	}
 
 	useEffect(() => {
@@ -84,7 +85,7 @@ const Testing = () => {
 						</Form.Item>
 					))}
 					<Form.Item>
-						<Button type='primary' htmlType='submit'>
+						<Button type='primary' htmlType='submit' loading={isLoading}>
 							Завершить
 						</Button>
 					</Form.Item>

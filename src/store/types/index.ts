@@ -1,6 +1,7 @@
 import { ITasksState } from './tasks'
 import { IAuthState } from './auth'
 import { ITestsState } from './tests'
+import { IUsersState } from './users'
 
 export enum Type {
 	REGISTER_SUCCESS = 'REGISTER_SUCCESS',
@@ -20,8 +21,12 @@ export enum Type {
 	TESTS_LOADED = 'TESTS_LOADED',
 	TESTS_LOADING = 'TESTS_FAIL',
 	TEST_LOADED = 'TEST_LOADED',
-	TEST_LOADING = 'TEST_LOADING'
-	
+	TEST_LOADING = 'TEST_LOADING',
+	TEST_FINISHED = 'TEST_FINISHED',
+	TEST_RESET = 'TEST_RESET',
+	USERS_LOADING = 'USERS_LOADING',
+	USERS_SUCCESS = 'USERS_SUCCESS',
+	USERS_FAIL = 'USERS_FAIL',
 }
 
 export interface RootState {
@@ -29,9 +34,10 @@ export interface RootState {
 	error: any
 	auth: IAuthState
 	tests: ITestsState
+	users: IUsersState
 }
 
 export type TypeDispatch = {
 	type: string
-	payload?: object
+	payload?: object | number
 }

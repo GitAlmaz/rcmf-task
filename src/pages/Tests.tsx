@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Form, Empty, Button, Spin, PageHeader, Input, Select, Alert, Space } from 'antd'
+import { Form, Empty, Button, Spin, PageHeader, Input, Select, Alert, Space, Result } from 'antd'
 import { FileAddOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
-import { createTest, loadTests } from '../store/tests/testsActions'
+import { createTest, loadTests, resetTest } from '../store/tests/testsActions'
 import { ICreateTest, ITest } from '../store/types/tests'
 import CreateModal from '../components/CreateModal'
 import { RootState } from '../store/types'
@@ -12,6 +12,7 @@ import { useHistory } from 'react-router-dom'
 const Tasks = () => {
 	const { tests, isLoading } = useSelector((state: RootState) => state.tests)
 	const isAdmin = useSelector((state: RootState) => state.auth.user?.info.admin)
+	const { result, test, showResult } = useSelector((state: RootState) => state.tests)
 	const dispatch = useDispatch()
 	const [modalVisible, setModalVisible] = useState(false)
 	const [form] = Form.useForm()
@@ -42,9 +43,12 @@ const Tasks = () => {
 		form.resetFields()
 	}
 
+	const closeResultHandler = () => {
+		dispatch(resetTest())
+	}
+
 	useEffect(() => {
 		dispatch(loadTests())
-		console.log(tests)
 	}, [])
 
 	return isLoading ? (
@@ -155,6 +159,29 @@ const Tasks = () => {
 			) : null}
 			{tests.length ? (
 				<>
+					{showResult ? result! > 80 ? (
+							<Result
+								status="success"
+								title={`Вы успешно прошли тест ${test.title}!`}
+								subTitle={`Вы набрали ${result}% правильных ответов!`}
+								extra={[
+									<Button type="ghost" key="console" onClick={closeResultHandler}>
+										Закрыть
+									</Button>
+								]}
+							/>
+						) : (
+							<Result
+								status="error"
+								title={`Вы не прошли тест ${test.title}!`}
+								subTitle={`Вы набрали ${result}% правильных ответов!`}
+								extra={[
+									<Button type="ghost" key="console" onClick={closeResultHandler}>
+										Закрыть
+									</Button>
+								]}
+							/>
+						) : null}
 					<PageHeader
 						onBack={() => history.push('/')}
 						title='Список тестов'
@@ -165,7 +192,7 @@ const Tasks = () => {
 							</Button>
 						] : null}
 					></PageHeader>
-					<Space wrap>
+					<Space wrap align="start">
 						{tests.map((test) => {
 							return (
 								<TestCard key={test.id} data={test} />
