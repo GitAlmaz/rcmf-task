@@ -6,10 +6,10 @@ import { createTest, loadTests, resetTest } from '../store/tests/testsActions'
 import { ICreateTest, ITest } from '../store/types/tests'
 import CreateModal from '../components/CreateModal'
 import { RootState } from '../store/types'
-import TestCard from '../components/TestCard'
+import TestCard from '../components/TestCard/TestCard'
 import { useHistory } from 'react-router-dom'
 
-const Tasks = () => {
+const Tests = () => {
 	const { tests, isLoading } = useSelector((state: RootState) => state.tests)
 	const isAdmin = useSelector((state: RootState) => state.auth.user?.info.admin)
 	const { result, test, showResult } = useSelector((state: RootState) => state.tests)
@@ -219,4 +219,4 @@ const Tasks = () => {
 	)
 }
 
-export default Tasks
+export default Tests

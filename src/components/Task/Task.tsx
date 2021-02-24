@@ -6,37 +6,25 @@ import {
 	CheckCircleTwoTone,
 	ClockCircleTwoTone
 } from '@ant-design/icons'
-import { ITask, IEditTask } from '../store/types/tasks'
+import { ITask, IEditTask } from '../../store/types/tasks'
+import { DynamicInputState } from '../../store/types'
+import { TaskLogic } from './TaskLogic'
 
-type TaskProps = {
+export type TaskProps = {
 	data: ITask
 	onTaskDelete(data: ITask): void
 	onTaskEdit(data: DynamicInputState | IEditTask): void
 }
-type DynamicInputState = {
-	[key: string]: string | boolean
-}
 
 const Task = ({ data, onTaskDelete, onTaskEdit }: TaskProps) => {
-	const [edit, setEdit] = useState(false)
-	const editData = {
-		id: data.id,
-		title: data.title,
-		description: data.description,
-		status: data.status
-	} as DynamicInputState
-	const createDate = `${new Date(data.create_date).getDate()}.${new Date(
-		data.create_date
-	).getMonth()}.${new Date(data.create_date).getFullYear()}`
-	
-	const changeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-		if (typeof event === 'boolean') {
-			editData.status = event
-		} else {
-			const { name, value } = event.target
-			editData[name] = value
-		}
-	}
+	const {
+		edit,
+		createDate,
+		changeHandler,
+		editableHandler,
+		submitEdit,
+		deleteHandler
+	} = TaskLogic({ data, onTaskDelete, onTaskEdit })
 
 	return (
 		<Card
@@ -58,12 +46,12 @@ const Task = ({ data, onTaskDelete, onTaskEdit }: TaskProps) => {
 			size='small'
 			extra={
 				<>
-					<a onClick={() => setEdit(!edit)} style={{ marginRight: 10 }}>
+					<a onClick={editableHandler} style={{ marginRight: 10 }}>
 						<EditOutlined />
 					</a>
 					<Popconfirm
 						title='Удалить эту задачу?'
-						onConfirm={() => onTaskDelete(data)}
+						onConfirm={deleteHandler}
 						okText='Да'
 						cancelText='Нет'
 						placement='bottomRight'
@@ -84,23 +72,11 @@ const Task = ({ data, onTaskDelete, onTaskEdit }: TaskProps) => {
 						style={{ marginBottom: 5 }}
 						onChange={changeHandler}
 					/>
-					{/* <Typography.Paragraph>
-						Статус:
-						<Switch
-							size='small'
-							defaultChecked={data.status}
-							style={{ marginLeft: 10 }}
-							onChange={changeHandler}
-						/>
-					</Typography.Paragraph> */}
 					<Button
 						htmlType='submit'
 						size='small'
-						type="primary"
-						onClick={() => {
-							setEdit(!edit)
-							onTaskEdit(editData)
-						}}
+						type='primary'
+						onClick={submitEdit}
 					>
 						Изменить
 					</Button>

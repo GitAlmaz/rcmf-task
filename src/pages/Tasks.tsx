@@ -18,7 +18,7 @@ import {
 	loadTasks
 } from '../store/tasks/tasksActions'
 import CreateTaskModal from '../components/CreateTaskModal'
-import Task from '../components/Task'
+import Task from '../components/Task/Task'
 import { RootState } from '../store/types'
 import {ICreateTask, IEditTask} from '../store/types/tasks'
 

@@ -41,3 +41,7 @@ export type TypeDispatch = {
 	type: string
 	payload?: object | number
 }
+
+export type DynamicInputState = {
+	[key: string]: string | boolean
+}

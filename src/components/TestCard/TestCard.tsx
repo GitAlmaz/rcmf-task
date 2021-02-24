@@ -1,26 +1,23 @@
 import React from 'react'
 import { Card, Typography, Button, Popconfirm } from 'antd'
-import { ITest } from '../store/types/tests'
+import { ITest } from '../../store/types/tests'
 import { DeleteTwoTone } from '@ant-design/icons'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '../store/types'
-import { deleteTest } from '../store/tests/testsActions'
+import { RootState } from '../../store/types'
+import { deleteTest } from '../../store/tests/testsActions'
 import { Link, useHistory } from 'react-router-dom'
-interface TestCardProps {
+import { TestCardLogic } from './TestCardLogic'
+
+export interface TestCardProps {
 	data: ITest
 }
 
 const TestCard = ({ data }: TestCardProps) => {
-	const isAdmin = useSelector((state: RootState) => state.auth.user?.info.admin)
-	const dispatch = useDispatch()
-	const history = useHistory()
-
-	const deleteHandler = (id: string) => {
-		dispatch(deleteTest(id))
-	}
-	const startTestHandler = (id: string) => {
-		history.push(`/tests/${id}`)
-	}
+	const {
+		isAdmin,
+		deleteHandler,
+		startTestHandler
+	} = TestCardLogic({data})
 
 	return (
 		<Card 
@@ -29,7 +26,7 @@ const TestCard = ({ data }: TestCardProps) => {
 				isAdmin ? (
 				<Popconfirm
 					title='Удалить этот тест?'
-					onConfirm={() => deleteHandler(data.id)}
+					onConfirm={deleteHandler}
 					okText='Да'
 					cancelText='Нет'
 					placement='bottomRight'
@@ -52,11 +49,11 @@ const TestCard = ({ data }: TestCardProps) => {
 			<Typography.Paragraph>
 				Вопросов: {data.questions.length}
 			</Typography.Paragraph>
-			<Link to={{pathname: `/tests/${data.id}`}}>
-				<Button type="primary">
+			{/* <Link to={{pathname: `/tests/${data.id}`}}> */}
+				<Button type="primary" onClick={startTestHandler}>
 					Пройти
 				</Button>
-			</Link>
+			{/* </Link> */}
 		</Card>
 	)
 }
