@@ -1,24 +1,15 @@
-import React, { useState, useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React, { useEffect } from 'react'
 import {
 	Form,
 	Button,
 	PageHeader,
 	Skeleton,
 	Radio,
-	Space,
 	Card,
 	Typography
 } from 'antd'
-import {
-	FileAddOutlined,
-	MinusCircleOutlined,
-	PlusOutlined
-} from '@ant-design/icons'
-import { RootState } from '../store/types'
-import { useHistory, useParams } from 'react-router-dom'
-import { RouteParams } from '../store/types/tests'
-import { finishTest, getTest } from '../store/tests/testsActions'
+import { useHistory } from 'react-router-dom'
+import TestingLogic from './TestingLogic'
 const styles = {
 	radio: {
 		display: 'block',
@@ -29,19 +20,10 @@ const styles = {
 	}
 }
 const Testing = () => {
-	const { id } = useParams<RouteParams>()
-	const { isLoading, test } = useSelector((state: RootState) => state.tests)
 	const history = useHistory()
-	const dispatch = useDispatch()
-	const [form] = Form.useForm()
-
-	const finishHandler = (values: object) => {
-		dispatch(finishTest(values))
-		history.push('/tests')
-	}
-
+	const { isLoading, test, form, finishHandler, fetchTest } = TestingLogic()
 	useEffect(() => {
-		dispatch(getTest(id))
+		fetchTest()
 	}, [])
 	return isLoading ? (
 		<Skeleton active />

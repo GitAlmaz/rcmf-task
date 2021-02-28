@@ -5,10 +5,10 @@ import DashboardLayout from '../layouts/DashboardLayout'
 import AdminRoute from './AdminRoute'
 
 const Main = lazy(() => import('../pages/Main'))
-const Tasks = lazy(() => import('../pages/Tasks'))
-const Tests = lazy(() => import('../pages/Tests'))
-const Login = lazy(() => import('../pages/Login'))
-const Testing = lazy(() => import('../pages/Testing'))
+const Tasks = lazy(() => import('../pages/Tasks/Tasks'))
+const Tests = lazy(() => import('../pages/Tests/Tests'))
+const Login = lazy(() => import('../pages/Login/Login'))
+const Testing = lazy(() => import('../pages/Testing/Testing'))
 const Users = lazy(() => import('../pages/Users'))
 const UserInfo = lazy(() => import('../pages/UserInfo'))
 

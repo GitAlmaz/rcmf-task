@@ -1,35 +1,18 @@
-import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import React from 'react'
 import { Card, Form, Input, Button, Space } from 'antd'
-import { useSelector, useDispatch } from 'react-redux'
-import { createUser, loginUser } from '../store/auth/authActions'
-import { RootState } from '../store/types'
-import { TUser } from '../store/types/auth'
+import LoginLogic from './LoginLogic'
 const { Item } = Form
 const { Password } = Input
 
 const Login = () => {
-	const dispatch = useDispatch()
-	const history = useHistory()
-	const [hasAccount, setHasAccount] = useState<boolean>(false)
-	const [form] = Form.useForm()
-	const loading = useSelector((state: RootState) => state.auth.isLoading)
-
-	const submitHandler = async (values: TUser) => {
-		try {
-			hasAccount ? await dispatch(loginUser(values)) : await dispatch(createUser(values))
-			history.push('/tests')
-		} catch (e) {}
-	}
-
-	const finishFailHandler = (errorInfo: any) => {
-		console.log('Failed:', errorInfo)
-	}
-
-	const hasAccountHandler = () => {
-		form.resetFields()
-		setHasAccount(!hasAccount)
-	}
+	const {
+		loading,
+		hasAccount,
+		form,
+		submitHandler,
+		finishFailHandler,
+		hasAccountHandler
+	} = LoginLogic()
 
 	return (
 		<Card

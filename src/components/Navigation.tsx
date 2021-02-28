@@ -19,9 +19,8 @@ import './styles/_logo.scss'
 const { SubMenu } = Menu
 
 const Navigation = () => {
-	const { user, isLoading } = useSelector((state: RootState) => state.auth)
+	const { user } = useSelector((state: RootState) => state.auth)
 	const dispatch = useDispatch()
-	// console.log('Navigation is render')
 	const logOutHandler = () => {
 		dispatch(logoutUser())
 	}

@@ -1,61 +1,25 @@
-import React, { useState, useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import {
-	Form,
-	Empty,
-	Button,
-	Spin,
-	Row,
-	Col,
-	PageHeader,
-	Typography
-} from 'antd'
+import React, { useEffect } from 'react'
+import { Empty, Button, Spin, Row, Col, PageHeader, Typography } from 'antd'
 import { FileAddOutlined } from '@ant-design/icons'
-import {
-	createTask,
-	deleteTask,
-	editTask,
-	loadTasks
-} from '../store/tasks/tasksActions'
-import CreateTaskModal from '../components/CreateTaskModal'
-import Task from '../components/Task/Task'
-import { RootState } from '../store/types'
-import {ICreateTask, IEditTask} from '../store/types/tasks'
+import CreateTaskModal from '../../components/CreateTaskModal'
+import Task from '../../components/Task/Task'
+import TasksLogic from './TasksLogic'
 
-const Tasks = ()=> {
-	const tasks = useSelector((state: RootState) => state.tasks.tasks)
-	const isLoading = useSelector((state: RootState) => state.tasks.isLoading)
-	const [modalVisibility, setModalVisibility] = useState<boolean>(false)
-	const [form] = Form.useForm()
-	const dispatch = useDispatch()
-	
-	const submitHandler = async (values: ICreateTask) => {
-		try {
-			const data: ICreateTask = { ...values, create_date: Date.now() }
-			await dispatch(createTask(data))
-		} catch (e) {}
-	}
-	const handleToggleModal = () => {
-		setModalVisibility(!modalVisibility)
-		form.resetFields()
-	}
-	const handleOk = () => {
-		form
-			.validateFields()
-			.then(values => {
-				handleToggleModal()
-				submitHandler(values)
-			})
-			.catch(e => {
-				console.log(e)
-			})
-	}
-
-	const onTaskDelete = ({ id }: { id: string }) => dispatch(deleteTask(id))
-	const onTaskEdit = (value: IEditTask) => dispatch(editTask(value))
+const Tasks = () => {
+	const {
+		tasks,
+		isLoading,
+		modalVisibility,
+		form,
+		handleToggleModal,
+		handleOk,
+		onTaskDelete,
+		onTaskEdit,
+		fetchTasks
+	} = TasksLogic()
 
 	useEffect(() => {
-		;(async () => await dispatch(loadTasks()))()
+		fetchTasks()
 	}, [])
 
 	return isLoading ? (
