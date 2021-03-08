@@ -19,7 +19,7 @@ import './styles/_logo.scss'
 const { SubMenu } = Menu
 
 const Navigation = () => {
-	const { user } = useSelector((state: RootState) => state.auth)
+	const { user, uid } = useSelector((state: RootState) => state.auth)
 	const dispatch = useDispatch()
 	const logOutHandler = () => {
 		dispatch(logoutUser())
@@ -39,7 +39,7 @@ const Navigation = () => {
 				>
 					<Menu.Item key='user_info' icon={<RadarChartOutlined />}>
 						Информация
-						<Link to='/user_information' />
+						<Link to={`/account/${uid}`} />
 					</Menu.Item>
 					<Menu.Item
 						key='user_logout'

@@ -11,6 +11,7 @@ import { errorReducer } from './error/errorReducer'
 import { authReducer } from './auth/authReducer'
 import { testReducer } from './tests/testsReducer'
 import { usersReducer } from './users/usersReducer'
+import { userReducer } from './user/userReducer'
 import { RootState } from './types'
 import thunk from 'redux-thunk'
 
@@ -21,7 +22,8 @@ const rootReducer: Reducer = combineReducers({
 	error: errorReducer,
 	auth: authReducer,
 	tests: testReducer,
-	users: usersReducer
+	users: usersReducer,
+	user: userReducer
 })
 
 export const store: Store<RootState> = createStore(

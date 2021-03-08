@@ -2,7 +2,6 @@ import { Type } from '../types'
 import firebase from 'firebase/app'
 import { Dispatch } from 'react'
 import { RootState, TypeDispatch } from '../types'
-import { IUser, UsersFromFirebase } from '../types/users'
 import { parseData } from '../../utils/utils'
 
 const usersLoad = () => async (
@@ -17,7 +16,6 @@ const usersLoad = () => async (
 			.on('value', async snap => {
 				const data = await snap.val()
 				const users = parseData(data)
-				console.log(users)
 				dispatch({ type: Type.USERS_SUCCESS, payload: users })
 			})
 	} catch (error) {
@@ -25,5 +23,6 @@ const usersLoad = () => async (
 		throw error
 	}
 }
+
 
 export { usersLoad }

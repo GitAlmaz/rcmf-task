@@ -2,6 +2,7 @@ import { ITasksState } from './tasks'
 import { IAuthState } from './auth'
 import { ITestsState } from './tests'
 import { IUsersState } from './users'
+import { UserState } from '../user/userReducer'
 
 export enum Type {
 	REGISTER_SUCCESS = 'REGISTER_SUCCESS',
@@ -12,6 +13,7 @@ export enum Type {
 	AUTH_ERROR = 'AUTH_ERROR',
 	USER_LOADING = 'USER_LOADING',
 	USER_LOADED = 'USER_LOADED',
+	USER_FAIL = 'USER_FAIL',
 	GET_ERRORS = 'GET_ERRORS',
 	CLEAR_ERRORS = 'CLEAR_ERRORS',
 	TASKS_LOADING = 'TASKS_LOADING',
@@ -27,6 +29,9 @@ export enum Type {
 	USERS_LOADING = 'USERS_LOADING',
 	USERS_SUCCESS = 'USERS_SUCCESS',
 	USERS_FAIL = 'USERS_FAIL',
+	ACCOUNT_LOADING = 'ACCOUNT_LOADING',
+	ACCOUNT_LOADED = 'ACCOUNT_LOADED',
+	ACCOUNT_FAIL = 'ACCOUNT_FAIL'
 }
 
 export interface RootState {
@@ -35,6 +40,7 @@ export interface RootState {
 	auth: IAuthState
 	tests: ITestsState
 	users: IUsersState
+	user: UserState
 }
 
 export type TypeDispatch = {

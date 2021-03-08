@@ -1,8 +1,9 @@
 import { Type } from '../types'
-import { IUsersState, IUser, UsersAction } from '../types/users'
+import { IUsersState, UsersAction } from '../types/users'
 
 const initialState: IUsersState = {
 	users: [],
+	user: {},
 	isLoading: false
 }
 
