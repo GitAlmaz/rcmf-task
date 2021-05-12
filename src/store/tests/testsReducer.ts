@@ -9,6 +9,7 @@ const initialState: ITestsState = {
 		title: '',
 		subject: '',
 		questions: [],
+		test_time: 60
 	},
 	showResult: false,
 	result: 0

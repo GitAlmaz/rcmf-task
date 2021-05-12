@@ -6,12 +6,14 @@ import {
 	Spin,
 	PageHeader,
 	Input,
+	InputNumber,
 	Select,
 	Alert,
 	Space,
 	Result
 } from 'antd'
 import {
+	DownloadOutlined,
 	FileAddOutlined,
 	MinusCircleOutlined,
 	PlusOutlined
@@ -80,6 +82,15 @@ const Tests = () => {
 							]}
 						>
 							<Input placeholder='Предмет' />
+						</Form.Item>
+						<Form.Item
+							name='test_time'
+							label="Время на тест (в секундах)"
+							rules={[
+								{ required: true, message: 'Пожалуйста заполните данное поле.' }
+							]}
+						>
+							<InputNumber size="middle" min={60} />
 						</Form.Item>
 						<Form.List
 							name='questions'
@@ -194,7 +205,14 @@ const Tests = () => {
 										onClick={closeResultHandler}
 									>
 										Закрыть
-									</Button>
+									</Button>,
+									<a
+										href="../../assets/sertif.pdf"
+										key='download'
+										download
+									>
+										Скачать сертификат
+									</a>
 								]}
 							/>
 						) : (

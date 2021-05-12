@@ -43,9 +43,9 @@ const Users: React.FC = () => {
 					<Button type='link' onClick={() => moreHandler(data, index)}>
 						Подробнее
 					</Button>
-					<Button type='link' danger>
+					{/* <Button type='link' danger>
 						Удалить
-					</Button>
+					</Button> */}
 				</Space>
 			),
 			width: '20%'
@@ -58,11 +58,11 @@ const Users: React.FC = () => {
 				onBack={() => history.push('/')}
 				title='Список пользователей'
 				style={{ padding: '16px 0' }}
-				extra={[
-					<Button key='createTask' type='primary' icon={<UserAddOutlined />}>
-						Добавить пользователя
-					</Button>
-				]}
+				// extra={[
+				// 	<Button key='createTask' type='primary' icon={<UserAddOutlined />}>
+				// 		Добавить пользователя
+				// 	</Button>
+				// ]}
 			></PageHeader>
 			<Table
 				loading={isLoading}

@@ -5,6 +5,7 @@ export interface ITestsState {
 		id: string
 		title: string
 		subject: string
+		test_time: number
 		questions: question[]
 	}
 	showResult?: boolean
@@ -24,6 +25,7 @@ export interface question {
 export interface ICreateTest {
 	title: string
 	subject: string
+	test_time: number
 	questions: question[]
 }
 

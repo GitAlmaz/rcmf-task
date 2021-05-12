@@ -7,13 +7,13 @@ import 'firebase/auth'
 import 'firebase/database'
 
 firebase.initializeApp({
-	apiKey: 'AIzaSyBmYB7F1WGqUH3zuYbJhgPxC1X-Ek2g7A4',
-	authDomain: 'r-task-manager.firebaseapp.com',
-	databaseURL: 'https://r-task-manager.firebaseio.com',
-	projectId: 'r-task-manager',
-	storageBucket: 'r-task-manager.appspot.com',
-	messagingSenderId: '212326817908',
-	appId: '1:212326817908:web:41ed3be6712a6174f07121'
+	apiKey: "AIzaSyCpxi73Pt2PLE2IOTh5LvGziWM-90rzOjU",
+	authDomain: "nurzhan-diplom.firebaseapp.com",
+	databaseURL: "https://nurzhan-diplom-default-rtdb.europe-west1.firebasedatabase.app",
+	projectId: "nurzhan-diplom",
+	storageBucket: "nurzhan-diplom.appspot.com",
+	messagingSenderId: "361516707273",
+	appId: "1:361516707273:web:1bbaac6b7b552354c34c18"
 })
 
 let isRendered: void | boolean

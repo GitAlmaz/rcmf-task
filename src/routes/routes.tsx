@@ -6,6 +6,7 @@ import AdminRoute from './AdminRoute'
 
 const Main = lazy(() => import('../pages/Main'))
 const Tasks = lazy(() => import('../pages/Tasks/Tasks'))
+const BigData = lazy(() => import('../pages/BigData/BigData'))
 const Tests = lazy(() => import('../pages/Tests/Tests'))
 const Login = lazy(() => import('../pages/Login/Login'))
 const Testing = lazy(() => import('../pages/Testing/Testing'))
@@ -33,6 +34,7 @@ const useRoutes = (isAuthenticated: boolean) =>
 				>
 					<Route exact path='/' component={Main} />
 					<Route exact path='/tasks' component={Tasks} />
+					<Route exact path='/bigdata' component={BigData} />
 					<Route exact path='/tests' component={Tests} />
 					<Route exact path='/tests/:id' component={Testing} />
 					<Route exact path='/account/:id' component={UserInfo} />

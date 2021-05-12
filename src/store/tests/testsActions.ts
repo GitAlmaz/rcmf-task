@@ -5,7 +5,7 @@ import { RootState, TypeDispatch } from '../types'
 import { ITest, ICreateTest, TestFromFirebase } from '../types/tests'
 import { parseData } from '../../utils/utils'
 
-const createTest = ({ title, subject, questions }: ICreateTest) => async (
+const createTest = ({ title, subject, questions, test_time }: ICreateTest) => async (
 	dispatch: Dispatch<TypeDispatch>,
 	getState: () => RootState
 ) => {
@@ -17,6 +17,7 @@ const createTest = ({ title, subject, questions }: ICreateTest) => async (
 				title,
 				subject,
 				questions,
+				test_time,
 				status: false
 			})
 			firebase

@@ -50,9 +50,9 @@ const Navigation = () => {
 						<Link to='/' />
 					</Menu.Item>
 				</SubMenu>
-				<Menu.Item key='tasks' icon={<BookOutlined />}>
-					Задачи
-					<Link to='/tasks' />
+				<Menu.Item key='bigdata' icon={<BookOutlined />}>
+					Учебник BigData
+					<Link to='/bigdata' />
 				</Menu.Item>
 				<Menu.Item key='tests' icon={<FormOutlined />}>
 					Тестирование

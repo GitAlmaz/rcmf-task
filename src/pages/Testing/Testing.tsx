@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
 	Form,
 	Button,
@@ -22,9 +22,22 @@ const styles = {
 const Testing = () => {
 	const history = useHistory()
 	const { isLoading, test, form, finishHandler, fetchTest } = TestingLogic()
+	let [time, setTime] = useState(0)
+
 	useEffect(() => {
 		fetchTest()
+		const timer = setInterval(() => {
+			setTime(time++)
+			if (time > test.test_time) {
+				clearInterval(timer)
+				history.push('/tests')
+			}
+		}, 1000)
+		return () => clearInterval(timer)
 	}, [])
+
+
+
 	return isLoading ? (
 		<Skeleton active />
 	) : (
@@ -32,6 +45,7 @@ const Testing = () => {
 			<PageHeader
 				onBack={() => history.push('/tests')}
 				title='Прохождение теста'
+				subTitle={`Осталось: ${test.test_time - time} секунд`}
 				style={{ padding: '16px 0' }}
 			></PageHeader>
 			<Card>
